@@ -1,0 +1,42 @@
+---
+- name: Install Apache2 server
+  hosts: all
+  become: true
+  remote_user: root
+  gather_facts: true
+  tasks:
+  - name: Install Apache2 server
+    apt:
+      name: apache2 
+      state: latest
+      update_cache: yes
+#  - name: copy apache2.conf file
+#    template: 
+#      src: apache2.conf
+#      dest: /etc/apache2/apache2.conf
+  - name: create directory for vm
+    file:
+      path: /home/demo/html
+      state: directory
+  - name: create directory for vm
+    file:
+      path: /var/www/demo
+      state: directory
+  - name: create sybolic link
+    file:
+      src: /home/demo/html
+      dest: /var/www/demo
+      state: link
+  - name: create new vm server
+    template: 
+      src: demo.conf
+      dest: /etc/apache2/sites-available
+    notify:
+    - restart Apache2 service
+  handlers:
+  - name: restart Apache2 service
+    service:
+      name: apache2
+      enabled: true
+      state: started
+...
