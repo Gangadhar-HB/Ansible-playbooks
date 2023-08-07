@@ -27,10 +27,10 @@
       src: /home/demo/html
       dest: /var/www/demo
       state: link
-  - name: create new vm server
-    template: 
-      src: demo.conf
-      dest: /etc/apache2/sites-available
+# - name: create new vm server
+#    template: 
+#     src: demo.conf
+#      dest: /etc/apache2/sites-available
     notify:
     - restart Apache2 service
   handlers:
